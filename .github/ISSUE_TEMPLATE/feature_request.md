@@ -2,19 +2,29 @@
 name: Feature request
 about: Suggest an idea for this project
 title: ''
-labels: ''
+labels: kind/feature-request
 assignees: ''
 
 ---
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+**Problem**
+A clear and concise description of what the problem or the user story this feature will solve. Ex. I'm always frustrated when [...]
+
+**User Persona**
+What use persona is this feature meant for? These could be multiple. If possible, define "I can" statements for the user persona in **Problem** and/or **Exit criteria** section.
 
 **Describe the solution you'd like**
 A clear and concise description of what you want to happen.
 
 **Describe alternatives you've considered**
 A clear and concise description of any alternative solutions or features you've considered.
+
+**Estimate in terms of 1 engineer day"
+Estimate in one-engineer-day that will take for this work to complete and meet exit criteria.
+If this is more than 10 days and please break it down into multiple feature requests.
+
+**Exit criteria**
+Describe an exit criteria to mark this feature as complete such as user "I can statement", or measurable outcomes
 
 **Additional context**
 Add any other context or screenshots about the feature request here.
