@@ -1,0 +1,401 @@
+{
+    "bootstrap": {
+        "node": {
+            "id": "router~10.16.2.3~istio-ingressgateway-749c79c9b5-9bvxf.istio-system~istio-system.svc.cluster.local",
+            "cluster": "istio-ingressgateway",
+            "metadata": {
+                    "ISTIO_PROXY_SHA": "istio-proxy:930841ca88b15365737acb7eddeea6733d4f98b9",
+                    "ISTIO_PROXY_VERSION": "1.0.7",
+                    "ISTIO_VERSION": "1.0-dev",
+                    "POD_NAME": "istio-ingressgateway-749c79c9b5-9bvxf",
+                    "istio": "sidecar"
+                },
+            "buildVersion": "0/1.8.0-dev//RELEASE"
+        },
+        "staticResources": {
+            "listeners": [
+                {
+                    "address": {
+                        "socketAddress": {
+                            "address": "0.0.0.0",
+                            "portValue": 15090
+                        }
+                    },
+                    "filterChains": [
+                        {
+                            "filters": [
+                                {
+                                    "name": "envoy.http_connection_manager",
+                                    "config": {
+                                            "codec_type": "AUTO",
+                                            "http_filters": {
+                                                        "name": "envoy.router"
+                                                    },
+                                            "route_config": {
+                                                        "virtual_hosts": [
+                                                                    {
+                                                                                "domains": [
+                                                                                            "*"
+                                                                                        ],
+                                                                                "name": "backend",
+                                                                                "routes": [
+                                                                                            {
+                                                                                                        "match": {
+                                                                                                                    "prefix": "/stats/prometheus"
+                                                                                                                },
+                                                                                                        "route": {
+                                                                                                                    "cluster": "prometheus_stats"
+                                                                                                                }
+                                                                                                    }
+                                                                                        ]
+                                                                            }
+                                                                ]
+                                                    },
+                                            "stat_prefix": "stats"
+                                        }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "clusters": [
+                {
+                    "name": "prometheus_stats",
+                    "connectTimeout": "0.250s",
+                    "hosts": [
+                        {
+                            "socketAddress": {
+                                "address": "127.0.0.1",
+                                "portValue": 15000
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "xds-grpc",
+                    "type": "STRICT_DNS",
+                    "connectTimeout": "10.000s",
+                    "hosts": [
+                        {
+                            "socketAddress": {
+                                "address": "istio-pilot",
+                                "portValue": 15010
+                            }
+                        }
+                    ],
+                    "circuitBreakers": {
+                        "thresholds": [
+                            {
+                                "maxConnections": 100000,
+                                "maxPendingRequests": 100000,
+                                "maxRequests": 100000
+                            },
+                            {
+                                "priority": "HIGH",
+                                "maxConnections": 100000,
+                                "maxPendingRequests": 100000,
+                                "maxRequests": 100000
+                            }
+                        ]
+                    },
+                    "http2ProtocolOptions": {
+
+                    },
+                    "upstreamConnectionOptions": {
+                        "tcpKeepalive": {
+                            "keepaliveTime": 300
+                        }
+                    }
+                },
+                {
+                    "name": "zipkin",
+                    "type": "STRICT_DNS",
+                    "connectTimeout": "1.000s",
+                    "hosts": [
+                        {
+                            "socketAddress": {
+                                "address": "zipkin",
+                                "portValue": 9411
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        "dynamicResources": {
+            "ldsConfig": {
+                "ads": {
+
+                }
+            },
+            "cdsConfig": {
+                "ads": {
+
+                }
+            },
+            "adsConfig": {
+                "apiType": "GRPC",
+                "grpcServices": [
+                    {
+                        "envoyGrpc": {
+                            "clusterName": "xds-grpc"
+                        }
+                    }
+                ],
+                "refreshDelay": "1.000s"
+            }
+        },
+        "statsConfig": {
+            "statsTags": [
+                {
+                    "tagName": "cluster_name",
+                    "regex": "^cluster\\.((.+?(\\..+?\\.svc\\.cluster\\.local)?)\\.)"
+                },
+                {
+                    "tagName": "tcp_prefix",
+                    "regex": "^tcp\\.((.*?)\\.)\\w+?$"
+                },
+                {
+                    "tagName": "response_code",
+                    "regex": "_rq(_(\\d{3}))$"
+                },
+                {
+                    "tagName": "response_code_class",
+                    "regex": "_rq(_(\\dxx))$"
+                },
+                {
+                    "tagName": "http_conn_manager_listener_prefix",
+                    "regex": "^listener(?=\\.).*?\\.http\\.(((?:[_.[:digit:]]*|[_\\[\\]aAbBcCdDeEfF[:digit:]]*))\\.)"
+                },
+                {
+                    "tagName": "http_conn_manager_prefix",
+                    "regex": "^http\\.(((?:[_.[:digit:]]*|[_\\[\\]aAbBcCdDeEfF[:digit:]]*))\\.)"
+                },
+                {
+                    "tagName": "listener_address",
+                    "regex": "^listener\\.(((?:[_.[:digit:]]*|[_\\[\\]aAbBcCdDeEfF[:digit:]]*))\\.)"
+                }
+            ],
+            "useAllDefaultTags": false
+        },
+        "tracing": {
+            "http": {
+                "name": "envoy.zipkin",
+                "config": {
+                        "collector_cluster": "zipkin"
+                    }
+            }
+        },
+        "admin": {
+            "accessLogPath": "/dev/null",
+            "address": {
+                "socketAddress": {
+                    "address": "127.0.0.1",
+                    "portValue": 15000
+                }
+            }
+        }
+    },
+    "lastUpdated": "2019-04-22T23:30:11.903Z"
+}{
+    "bootstrap": {
+        "node": {
+            "id": "router~10.16.2.3~istio-ingressgateway-749c79c9b5-9bvxf.istio-system~istio-system.svc.cluster.local",
+            "cluster": "istio-ingressgateway",
+            "metadata": {
+                    "ISTIO_PROXY_SHA": "istio-proxy:930841ca88b15365737acb7eddeea6733d4f98b9",
+                    "ISTIO_PROXY_VERSION": "1.0.7",
+                    "ISTIO_VERSION": "1.0-dev",
+                    "POD_NAME": "istio-ingressgateway-749c79c9b5-9bvxf",
+                    "istio": "sidecar"
+                },
+            "buildVersion": "0/1.8.0-dev//RELEASE"
+        },
+        "staticResources": {
+            "listeners": [
+                {
+                    "address": {
+                        "socketAddress": {
+                            "address": "0.0.0.0",
+                            "portValue": 15090
+                        }
+                    },
+                    "filterChains": [
+                        {
+                            "filters": [
+                                {
+                                    "name": "envoy.http_connection_manager",
+                                    "config": {
+                                            "codec_type": "AUTO",
+                                            "http_filters": {
+                                                        "name": "envoy.router"
+                                                    },
+                                            "route_config": {
+                                                        "virtual_hosts": [
+                                                                    {
+                                                                                "domains": [
+                                                                                            "*"
+                                                                                        ],
+                                                                                "name": "backend",
+                                                                                "routes": [
+                                                                                            {
+                                                                                                        "match": {
+                                                                                                                    "prefix": "/stats/prometheus"
+                                                                                                                },
+                                                                                                        "route": {
+                                                                                                                    "cluster": "prometheus_stats"
+                                                                                                                }
+                                                                                                    }
+                                                                                        ]
+                                                                            }
+                                                                ]
+                                                    },
+                                            "stat_prefix": "stats"
+                                        }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "clusters": [
+                {
+                    "name": "prometheus_stats",
+                    "connectTimeout": "0.250s",
+                    "hosts": [
+                        {
+                            "socketAddress": {
+                                "address": "127.0.0.1",
+                                "portValue": 15000
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "xds-grpc",
+                    "type": "STRICT_DNS",
+                    "connectTimeout": "10.000s",
+                    "hosts": [
+                        {
+                            "socketAddress": {
+                                "address": "istio-pilot",
+                                "portValue": 15010
+                            }
+                        }
+                    ],
+                    "circuitBreakers": {
+                        "thresholds": [
+                            {
+                                "maxConnections": 100000,
+                                "maxPendingRequests": 100000,
+                                "maxRequests": 100000
+                            },
+                            {
+                                "priority": "HIGH",
+                                "maxConnections": 100000,
+                                "maxPendingRequests": 100000,
+                                "maxRequests": 100000
+                            }
+                        ]
+                    },
+                    "http2ProtocolOptions": {
+
+                    },
+                    "upstreamConnectionOptions": {
+                        "tcpKeepalive": {
+                            "keepaliveTime": 300
+                        }
+                    }
+                },
+                {
+                    "name": "zipkin",
+                    "type": "STRICT_DNS",
+                    "connectTimeout": "1.000s",
+                    "hosts": [
+                        {
+                            "socketAddress": {
+                                "address": "zipkin",
+                                "portValue": 9411
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        "dynamicResources": {
+            "ldsConfig": {
+                "ads": {
+
+                }
+            },
+            "cdsConfig": {
+                "ads": {
+
+                }
+            },
+            "adsConfig": {
+                "apiType": "GRPC",
+                "grpcServices": [
+                    {
+                        "envoyGrpc": {
+                            "clusterName": "xds-grpc"
+                        }
+                    }
+                ],
+                "refreshDelay": "1.000s"
+            }
+        },
+        "statsConfig": {
+            "statsTags": [
+                {
+                    "tagName": "cluster_name",
+                    "regex": "^cluster\\.((.+?(\\..+?\\.svc\\.cluster\\.local)?)\\.)"
+                },
+                {
+                    "tagName": "tcp_prefix",
+                    "regex": "^tcp\\.((.*?)\\.)\\w+?$"
+                },
+                {
+                    "tagName": "response_code",
+                    "regex": "_rq(_(\\d{3}))$"
+                },
+                {
+                    "tagName": "response_code_class",
+                    "regex": "_rq(_(\\dxx))$"
+                },
+                {
+                    "tagName": "http_conn_manager_listener_prefix",
+                    "regex": "^listener(?=\\.).*?\\.http\\.(((?:[_.[:digit:]]*|[_\\[\\]aAbBcCdDeEfF[:digit:]]*))\\.)"
+                },
+                {
+                    "tagName": "http_conn_manager_prefix",
+                    "regex": "^http\\.(((?:[_.[:digit:]]*|[_\\[\\]aAbBcCdDeEfF[:digit:]]*))\\.)"
+                },
+                {
+                    "tagName": "listener_address",
+                    "regex": "^listener\\.(((?:[_.[:digit:]]*|[_\\[\\]aAbBcCdDeEfF[:digit:]]*))\\.)"
+                }
+            ],
+            "useAllDefaultTags": false
+        },
+        "tracing": {
+            "http": {
+                "name": "envoy.zipkin",
+                "config": {
+                        "collector_cluster": "zipkin"
+                    }
+            }
+        },
+        "admin": {
+            "accessLogPath": "/dev/null",
+            "address": {
+                "socketAddress": {
+                    "address": "127.0.0.1",
+                    "portValue": 15000
+                }
+            }
+        }
+    },
+    "lastUpdated": "2019-04-22T23:30:11.903Z"
+}
