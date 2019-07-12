@@ -1,0 +1,16 @@
+apiVersion: eventing.knative.dev/v1alpha1
+kind: Trigger
+metadata:
+  name: label-extractor
+spec:
+  importers:
+    - eventTypeName: gcs-object-finalize
+      arguments:
+        googleCloudProject: akashv-public
+        gcsCredsSecret: google-cloud-key
+        bucket: akashv-bucket
+  subscriber:
+    ref:
+      apiVersion: serving.knative.dev/v1alpha1
+      kind: Service
+      name: label-extractor
