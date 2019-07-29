@@ -97,18 +97,21 @@ func writeToGcs(bucketID string, objectID string, text string) error {
 }
 
 func main() {
+/*
+	log.Println("imperative mode")
+	customEvent := cloudevents.NewEvent(cloudevents.VersionV02)
 
-	// customEvent := cloudevents.NewEvent(cloudevents.VersionV02)
+	customEvent.SetType("com.google.storage.finalize")
+	customEvent.SetData(pubsub.Message{
+		Attributes: map[string]string{
+			"bucketId": "wat-eventing-demo",
+			"objectId": "text.jpg",
+		},
+	})
+	processEvent(customEvent)
+*/
 
-	// customEvent.SetType("com.google.storage.finalize")
-	// customEvent.SetData(pubsub.Message{
-	// 	Attributes: map[string]string{
-	// 		"bucketId": "akashv-bucket",
-	// 		"objectId": "images/text.jpg",
-	// 	},
-	// })
-	// processEvent(customEvent)
-
+	log.Println("Listening for events")
 	c, err := cloudevents.NewDefaultClient()
 	if err != nil {
 		log.Fatal("Failed to create client, ", err)
